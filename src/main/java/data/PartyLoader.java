@@ -1,41 +1,39 @@
 package data;
 
+import data.util.PartyFileReader;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class PartyLoader {
 
-   private List<String> partyParticipants;
+   private Map<Integer, String> partyParticipants;
    private Integer[][] party;
 
-   public List<String> getPartyParticipants() {
+   private static PartyLoader instance;
+
+   public static PartyLoader getInstance() {
+      if(instance == null ){
+         instance = new PartyLoader();
+      }
+      return instance;
+   }
+
+   private PartyLoader(){ }
+
+   public Map<Integer, String> getPartyParticipants(){
       return partyParticipants;
    }
 
-   public void setPartyParticipants(List<String> partyParticipants) {
-      this.partyParticipants = partyParticipants;
-   }
-
-   public Integer[][] getParty() {
+   public Integer[][] getParty(){
       return party;
    }
 
-   public void setParty(Integer[][] party) {
-      this.party = party;
-   }
-
-   public void loadParticipants(){
-      if(partyParticipants == null){
-         partyParticipants = new ArrayList<>();
-      }
-      partyParticipants.add("1");
-      partyParticipants.add("2");
-      partyParticipants.add("3");
-      partyParticipants.add("4");
-   }
-
    public void loadParty(final Integer partyAttendants){
+
+      partyParticipants = PartyFileReader.getInstance().loadParticipants();
 
       party = new Integer[partyAttendants][partyAttendants];
       for(int i = 0; i < partyAttendants; i++){
@@ -43,31 +41,14 @@ public class PartyLoader {
             party[i][j] = 0;
       }
 
-      fillParty(party, getPartyData());
+      fillParty(party);
    }
 
-   private void fillParty(Integer[][] party, String partyData){
-      List<String> dataList = Arrays.asList(partyData.split(";"));
+   private void fillParty(Integer[][] party){
+      List<String> dataList = PartyFileReader.getInstance().loadPartyFile();
       for(String data : dataList){
          String[] partyMember = data.split(",");
          party[Integer.parseInt(partyMember[0])- 1][Integer.parseInt(partyMember[1]) - 1] = 1;
       }
    }
-
-   private String getPartyData(){
-      StringBuilder party = new StringBuilder();
-      party.append("1,2;");
-      party.append("1,4;");
-      party.append("1,3;");
-      party.append("2,1;");
-      party.append("2,4;");
-      party.append("2,3;");
-      party.append("4,1;");
-      party.append("4,2;");
-      party.append("4,3");
-
-      return party.toString();
-   }
-
-
 }

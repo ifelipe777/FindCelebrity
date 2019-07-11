@@ -3,28 +3,31 @@ package party;
 import data.PartyLoader;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 public class FindCelebrity {
 
    public static void main(String args[]){
-      PartyLoader loader = new PartyLoader();
-      loader.loadParty(4);
-      loader.loadParticipants();
+      System.out.println(findTheCelebrityExecutor(4));
+   }
 
-      Integer celebrity = findTheCelebrity(loader.getParty(), loader.getPartyParticipants());
+   public static String findTheCelebrityExecutor(final Integer attendants){
+      PartyLoader.getInstance().loadParty(4);
+
+      Integer celebrity = findTheCelebrity(PartyLoader.getInstance().getParty(), PartyLoader.getInstance().getPartyParticipants());
       if(celebrity > 0){
-         System.out.println("Celebrity found: " + celebrity);
+         return "Celebrity found: " + PartyLoader.getInstance().getPartyParticipants().get(celebrity);
       } else {
-         System.out.println("Celebrity not found");
+         return "Celebrity not found";
       }
    }
 
-   private static Integer findTheCelebrity(final Integer[][] party, final List<String> participantsList){
+   private static Integer findTheCelebrity(final Integer[][] party, final Map<Integer, String> participantsList){
 
       Stack<Integer> participants = new Stack<>();
-      for(String participant : participantsList){
-         participants.push(Integer.parseInt(participant));
+      for(Map.Entry<Integer, String> participant : participantsList.entrySet()){
+         participants.push(participant.getKey());
       }
 
       while(participants.size() > 1){
@@ -39,8 +42,8 @@ public class FindCelebrity {
 
       Integer celebrity = participants.pop();
 
-      for(String participant : participantsList){
-         if(knowsParticipant(celebrity, Integer.parseInt(participant), party))
+      for(Map.Entry<Integer, String> participant : participantsList.entrySet()){
+         if(knowsParticipant(celebrity, participant.getKey(), party))
             return -1;
       }
 
