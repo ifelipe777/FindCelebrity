@@ -1,5 +1,6 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class PartyLoader {
    }
 
    public void loadParticipants(){
+      if(partyParticipants == null){
+         partyParticipants = new ArrayList<>();
+      }
       partyParticipants.add("1");
       partyParticipants.add("2");
       partyParticipants.add("3");
