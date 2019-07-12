@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,9 +33,9 @@ public class PartyFileReader {
 
          return partyParticipants;
       } catch(final URISyntaxException us){
-
+         Logger.getGlobal().log(Level.SEVERE, us.getMessage());
       } catch(final IOException ioe){
-
+         Logger.getGlobal().log(Level.SEVERE, ioe.getMessage());
       }
       return null;
    }

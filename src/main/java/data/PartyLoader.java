@@ -1,11 +1,10 @@
 package data;
 
 import data.util.PartyFileReader;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PartyLoader {
 
@@ -31,24 +30,32 @@ public class PartyLoader {
       return party;
    }
 
-   public void loadParty(final Integer partyAttendants){
+   public void loadParty(){
 
       partyParticipants = PartyFileReader.getInstance().loadParticipants();
 
-      party = new Integer[partyAttendants][partyAttendants];
-      for(int i = 0; i < partyAttendants; i++){
-         for(int j = 0; j < partyAttendants; j++)
-            party[i][j] = 0;
-      }
+      if(partyParticipants != null) {
+         party = new Integer[partyParticipants.size()][partyParticipants.size()];
+         for (int i = 0; i < partyParticipants.size(); i++) {
+            for (int j = 0; j < partyParticipants.size(); j++)
+               party[i][j] = 0;
+         }
 
-      fillParty(party);
+         fillParty(party);
+      } else {
+         Logger.getGlobal().log(Level.WARNING, "Error on party loading");
+      }
    }
 
    private void fillParty(Integer[][] party){
       List<String> dataList = PartyFileReader.getInstance().loadPartyFile();
       for(String data : dataList){
          String[] partyMember = data.split(",");
-         party[Integer.parseInt(partyMember[0])- 1][Integer.parseInt(partyMember[1]) - 1] = 1;
+         if(partyMember[0].equals(partyMember[1])){
+            party[Integer.parseInt(partyMember[0]) - 1][Integer.parseInt(partyMember[1]) - 1] = 0;
+         } else {
+            party[Integer.parseInt(partyMember[0]) - 1][Integer.parseInt(partyMember[1]) - 1] = 1;
+         }
       }
    }
 }

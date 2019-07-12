@@ -8,18 +8,21 @@ import java.util.Stack;
 
 public class FindCelebrity {
 
+   private static String MSG_CELEBRITY_NOT_FOUND = "Celebrity not found";
+   private static String MSG_CELEBRITY_FOUND = "Celebrity found: ";
+
    public static void main(String args[]){
-      System.out.println(findTheCelebrityExecutor(4));
+      System.out.println(findTheCelebrityExecutor());
    }
 
-   public static String findTheCelebrityExecutor(final Integer attendants){
-      PartyLoader.getInstance().loadParty(4);
+   public static String findTheCelebrityExecutor(){
+      PartyLoader.getInstance().loadParty();
 
       Integer celebrity = findTheCelebrity(PartyLoader.getInstance().getParty(), PartyLoader.getInstance().getPartyParticipants());
       if(celebrity > 0){
-         return "Celebrity found: " + PartyLoader.getInstance().getPartyParticipants().get(celebrity);
+         return MSG_CELEBRITY_FOUND + PartyLoader.getInstance().getPartyParticipants().get(celebrity);
       } else {
-         return "Celebrity not found";
+         return MSG_CELEBRITY_NOT_FOUND;
       }
    }
 

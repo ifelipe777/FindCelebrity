@@ -9,7 +9,7 @@ public class PartyLoaderTest {
 
    @Test
    public void loadPartyTest(){
-      PartyLoader.getInstance().loadParty(4);
+      PartyLoader.getInstance().loadParty();
       Assert.assertTrue(PartyLoader.getInstance().getParty().length > 0);
       Assert.assertTrue(!PartyLoader.getInstance().getPartyParticipants().isEmpty());
    }
